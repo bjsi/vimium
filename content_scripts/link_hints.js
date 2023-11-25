@@ -1373,7 +1373,7 @@ const LocalHints = {
     window.postMessage({
       data: {
         type: "VIMIUM_DATA",
-        hints: nonOverlappingHints
+        hints: nonOverlappingHints.map(h => ({...h, element: undefined}))
       },
     })
     return nonOverlappingHints;
