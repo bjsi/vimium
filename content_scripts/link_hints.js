@@ -1370,6 +1370,12 @@ const LocalHints = {
         Object.assign(hint, this.generateLinkText(hint));
       }
     }
+    window.postMessage({
+      data: {
+        type: "VIMIUM_DATA",
+        hints: nonOverlappingHints
+      },
+    })
     return nonOverlappingHints;
   },
 
