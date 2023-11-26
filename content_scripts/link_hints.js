@@ -1,3 +1,34 @@
+function getAncestorStack(element) {
+	let ancestorStack = [];
+
+  let i = 0;
+	while (element && element !== document.body) {
+		let elementDetails = {
+    tagName: element.tagName,
+	 classes: Array.from(element.classList),
+	 dataAttributes: Object.assign({}, element.dataset)
+		};
+    if (i === 0) {
+      elementDetails.textContent = element.textContent;
+      elementDetails.value = element.value;
+      elementDetails.placeholder = element.placeholder;
+      elementDetails.title = element.title;
+      elementDetails.id = element.id;
+      elementDetails.name = element.name;
+      elementDetails.type = element.type;
+      elementDetails.ariaLabel = element.getAttribute("aria-label");
+      elementDetails.ariaRole = element.getAttribute("aria-role");
+      elementDetails.role = element.getAttribute("role");
+    }
+		ancestorStack.push(elementDetails);
+		element = element.parentNode;
+    i++;
+	}
+	return ancestorStack;
+}
+
+
+
 //
 // This implements link hinting. Typing "F" will enter link-hinting mode, where all clickable items
 // on the page have a hint marker displayed containing a sequence of letters. Typing those letters
@@ -1373,7 +1404,7 @@ const LocalHints = {
     window.postMessage({
       data: {
         type: "VIMIUM_DATA",
-        hints: nonOverlappingHints.map(h => ({...h, element: undefined}))
+        hints: nonOverlappingHints.map(h => ({...h, element: undefined, stack: getAncestorStack(h.element)}))
       },
     })
     return nonOverlappingHints;
